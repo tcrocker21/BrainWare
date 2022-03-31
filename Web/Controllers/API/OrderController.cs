@@ -15,10 +15,8 @@ namespace Web.Controllers
     {
         [HttpGet]
         public IEnumerable<Order> GetOrders(int id = 1)
-        {
-            var data = new OrderService();
-
-            return data.GetOrdersForCompany(id);
+        {            
+            return OrderService.GetOrdersForCompany(id);
         }
     }
 }

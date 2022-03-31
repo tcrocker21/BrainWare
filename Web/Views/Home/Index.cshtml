@@ -1,44 +1,28 @@
-﻿<div class="jumbotron">
+﻿@model IEnumerable<Web.Models.Order>
+
+<div class="jumbotron">
     <h1>BrainWare Orders</h1>
     <p class="lead">This is the BrainWare orders page! Welcome</p>
 </div>
 <div class="row">
     <div class="col-md-12">
         <h2>Your Orders</h2>
-        <div id="orders"></div>
+        <div id="orders">
+            <ul>
+                @foreach (var o in Model)
+                {
+                <li>
+                    @o.Description (Total: $@o.OrderTotal)
+                    <ul>
+                        @foreach (var p in o.OrderProducts)
+                        {
+                            <li>@p.Product.Name (@p.Quantity @@ $@p.Price/ea)</li>
+                        }
+                    </ul>
+                </li>
+                }
+            </ul>
+        </div>
     </div>
   
 </div>
-<script>
-    $(document).ready(function () {
-        var $orders = $('#orders');
-        $.ajax({
-            'url': '/api/order/1',
-            'type': 'GET',
-            'success': function (data) {
-
-                var $orderList = $('<ul/>');
-
-                if (data) {
-                    $.each(data,
-                        function(i) {
-                            var $li = $('<li/>').text(this.Description + ' (Total: $' + this.OrderTotal + ')')
-                                .appendTo($orderList);
-
-                            var $productList = $('<ul/>');
-
-                            $.each(this.OrderProducts, function(j) {
-                                var $li2 = $('<li/>').text(this.Product.Name + ' ('+ this.Quantity +' @@ $' + this.Price + '/ea)')
-                                    .appendTo($productList);
-                            });
-
-                            $productList.appendTo($li);
-                        });
-
-                    $orders.append($orderList);
-                }
-            }
-        });
-    });
-</script>
-

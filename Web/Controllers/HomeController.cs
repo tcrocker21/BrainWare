@@ -10,10 +10,12 @@ namespace Web.Controllers
 
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(int company_id = 1)
         {
             this.ViewBag.Title = "Home Page";
-            return View();
+            var orders = OrderService.GetOrdersForCompany(company_id);
+
+            return View(orders);
         }
     }
 }
